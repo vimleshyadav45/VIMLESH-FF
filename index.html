@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIMLESH FF - Official Tool & Protocols</title>
+    <style>
+        :root {
+            --bg-dark: #070a0f;
+            --card-bg: #111723;
+            --card-border: #1e293b;
+            --primary-cyan: #06b6d4;
+            --primary-cyan-glow: rgba(6, 182, 212, 0.4);
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --overlay-bg: rgba(7, 10, 15, 0.90);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        /* Top Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        .brand-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-cyan);
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--primary-cyan-glow);
+        }
+
+        .owner-badge {
+            font-size: 11px;
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--primary-cyan);
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--primary-cyan);
+            font-weight: 600;
+        }
+
+        /* Tool Cards */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .card:hover {
+            border-color: var(--primary-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px var(--primary-cyan-glow);
+        }
+
+        .card-icon {
+            width: 52px;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-info h3 {
+            font-size: 18px;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .card-info p {
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+
+        .tag {
+            position: absolute;
+            top: -10px;
+            right: 16px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 8px;
+            text-transform: uppercase;
+        }
+        .tag-hot { background: #ef4444; color: white; }
+        .tag-new { background: var(--primary-cyan); color: #000; }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--overlay-bg);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 20px;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .lock-icon-circle {
+            width: 70px;
+            height: 70px;
+            background: rgba(245, 158, 11, 0.1);
+            border: 2px solid var(--accent-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 32px;
+        }
+
+        .input-group {
+            margin: 16px 0;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 11px;
+            color: var(--primary-cyan);
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .input-field, select {
+            width: 100%;
+            padding: 14px;
+            background: #0a0f18;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-field:focus, select:focus {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 10px var(--primary-cyan-glow);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary-cyan), #0891b2);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-social {
+            background: #1e293b;
+            color: white;
+            margin-top: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .btn-tg { background: #0088cc; }
+        .btn-insta { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .hidden { display: none !important; }
+
+        /* Footer */
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+
+        /* Loader Animation */
+        .progress-box {
+            width: 100%;
+            background: #0a0f18;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin: 15px 0;
+            border: 1px solid var(--card-border);
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--primary-cyan);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="brand-title">VIMLESH FF</div>
+            <div class="owner-badge">Owner: Vimlesh Yadav</div>
+        </div>
+
+        <!-- Tool Cards -->
+        <div class="card" onclick="openModal('modal-likes')">
+            <span class="tag tag-hot">HOT</span>
+            <div class="card-icon">❤️</div>
+            <div class="card-info">
+                <h3>Get Likes</h3>
+                <p>Boost profile likes via safe protocol</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="openModal('modal-visits')">
+            <div class="card-icon">👥</div>
+            <div class="card-info">
+                <h3>Get Visits</h3>
+                <p>Synchronize profile visitors</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="openModal('modal-emotes')">
+            <span class="tag tag-new">NEW</span>
+            <div class="card-icon">🔥</div>
+            <div class="card-info">
+                <h3>Evo & Old Emotes</h3>
+                <p>Execute rare weapon & OG emotes</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="openModal('modal-squad')">
+            <div class="card-icon">🎮</div>
+            <div class="card-info">
+                <h3>3/5/6 Squad Group</h3>
+                <p>Formation & lobby joiner</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="openModal('modal-badge')">
+            <span class="tag tag-new">NEW</span>
+            <div class="card-icon">🛡️</div>
+            <div class="card-info">
+                <h3>V Badge & Rare Badges</h3>
+                <p>Status emblem synchronization</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="openModal('modal-redeem')">
+            <div class="card-icon">🎁</div>
+            <div class="card-info">
+                <h3>Redeem Code Tool</h3>
+                <p>Direct item redemption box</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            © 2026 VIMLESH FF | Created by Vimlesh Yadav
+        </div>
+    </div>
+
+    <!-- 1. Password Protection Modal -->
+    <div id="modal-pass" class="modal-overlay">
+        <div class="modal">
+            <div class="lock-icon-circle">🔒</div>
+            <h2>Enter Password</h2>
+            <p style="color: var(--text-sub); font-size: 13px; margin-top: 6px;">
+                This site is password protected.
+            </p>
+            <div class="input-group">
+                <input type="password" id="pass-input" class="input-field" placeholder="Enter Password">
+            </div>
+            <button class="btn" onclick="checkPassword()">Unlock ➔</button>
+            
+            <p style="color: var(--text-sub); font-size: 12px; margin-top: 16px;">Don't know the password?</p>
+            <a href="https://t.me/vimleshyadavff" target="_blank" class="btn btn-social btn-tg">
+                ✈️ Get Password on Telegram
+            </a>
+            <a href="https://instagram.com/onlyraosahab01" target="_blank" class="btn btn-social btn-insta">
+                📸 Message on Instagram (@onlyraosahab01)
+            </a>
+        </div>
+    </div>
+
+    <!-- 2. Get Likes Modal -->
+    <div id="modal-likes" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-btn" onclick="closeModal('modal-likes')">✕</button>
+            <h2>Get Likes Protocol</h2>
+            <p style="color: var(--text-sub); font-size: 12px; margin-bottom: 10px;">Connect & Boost Profile</p>
+            <div class="input-group">
+                <label>Player UID</label>
+                <input type="number" id="like-uid" class="input-field" placeholder="Enter Free Fire UID">
+            </div>
+            <div class="input-group">
+                <label>Select Protocol</label>
+                <select>
+                    <option>20 Free Likes (Protocol L-20)</option>
+                    <option>220 Likes (Protocol L-220)</option>
+                </select>
+            </div>
+            <button class="btn" onclick="startProcess('like-uid', 'Sending Likes...')">Get Likes ❤️</button>
+        </div>
+    </div>
+
+    <!-- 3. Get Visits Modal -->
+    <div id="modal-visits" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-btn" onclick="closeModal('modal-visits')">✕</button>
+            <h2>Visit Protocol</h2>
+            <div class="input-group">
+                <label>Free Fire UID</label>
+                <input type="number" id="visit-uid" class="input-field" placeholder="Enter Player UID">
+            </div>
+            <div class="input-group">
+                <label>Server Region</label>
+                <select>
+                    <option>IND - India</option>
+                    <option>BD - Bangladesh</option>
+                    <option>SG - Singapore</option>
+                </select>
+            </div>
+            <button class="btn" onclick="startProcess('visit-uid', 'Synchronizing Visits...')">Get Profile Visits 👥</button>
+        </div>
+    </div>
+
+    <!-- 4. Evo & Rare Emotes Modal -->
+    <div id="modal-emotes" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-btn" onclick="closeModal('modal-emotes')">✕</button>
+            <h2>Evo Emotes Protocol</h2>
+            <div class="input-group">
+                <label>Player UID</label>
+                <input type="number" id="emote-uid" class="input-field" placeholder="Enter Player UID">
+            </div>
+            <div class="input-group">
+                <label>Team Code</label>
+                <input type="text" class="input-field" placeholder="Enter Team Code">
+            </div>
+            <div class="input-group">
+                <label>Select Emote</label>
+                <select>
+                    <option>Evo AK (Blue Flame Draco)</option>
+                    <option>Evo M1014 (Green Flame Dragon)</option>
+                    <option>Evo MP40 (Predator Cobra)</option>
+                    <option>Evo XM8 (Destiny Guardian)</option>
+                    <option>Evo UMP (Grizzly Papercut)</option>
+                    <option>Evo M1887 (Sterling Conqueror)</option>
+                    <option>Evo Woodpecker (Majestic Prowler)</option>
+                    <option>Throne Emote (OG)</option>
+                    <option>Push-up Emote</option>
+                    <option>Pirate Flag Emote</option>
+                    <option>Flower Emote</option>
+                    <option>LOL Emote</option>
+                    <option>Breakdance Emote</option>
+                    <option>Heart Break Emote</option>
+                    <option>Fire Ball Emote</option>
+                </select>
+            </div>
+            <button class="btn" onclick="startProcess('emote-uid', 'Executing Emote Protocol...')">Execute Evo Emote 🎭</button>
+        </div>
+    </div>
+
+    <!-- 5. Squad Protocol Modal -->
+    <div id="modal-squad" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-btn" onclick="closeModal('modal-squad')">✕</button>
+            <h2>Squad Protocol</h2>
+            <div class="input-group">
+                <label>Free Fire UID</label>
+                <input type="number" id="squad-uid" class="input-field" placeholder="Enter Player UID">
+            </div>
+            <div class="input-group">
+                <label>Squad Size</label>
+                <select>
+                    <option>3 Members</option>
+                    <option>5 Members</option>
+                    <option>6 Members</option>
+                </select>
+            </div>
+            <button class="btn" onclick="startProcess('squad-uid', 'Deploying Squad Invite...')">Deploy Squad Invite 👥</button>
+        </div>
+    </div>
+
+    <!-- 6. V Badge & Rare Badges Modal -->
+    <div id="modal-badge" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-btn" onclick="closeModal('modal-badge')">✕</button>
+            <h2>Badge Protocol</h2>
+            <div class="input-group">
+                <label>Free Fire UID</label>
+                <input type="number" id="badge-uid" class="input-field" placeholder="Enter Player UID">
+            </div>
+            <div class="input-group">
+                <label>Badge Type</label>
+                <select>
+                    <option>Craftland Badge</option>
+                    <option>New V Badge</option>
+                    <option>Moderator Badge</option>
+                    <option>Old V Badge</option>
+                    <option>Pro Badge</option>
+                </select>
+            </div>
+            <div style="font-size: 11px; color: var(--accent-orange); margin-bottom: 12px; text-align: left;">
+                ⚠️ TARGET MUST BE IN A GROUP FOR SYNCHRONIZATION
+            </div>
+            <button class="btn" onclick="startProcess('badge-uid', 'Syncing Badge Status...')">Deploy Badge Invite 🎖️</button>
+        </div>
+    </div>
+
+    <!-- 7. Redeem Code Modal -->
+    <div id="modal-redeem" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-btn" onclick="closeModal('modal-redeem')">✕</button>
+            <h2>Redeem Code Tool</h2>
+            <div class="input-group">
+                <label>Player UID</label>
+                <input type="number" id="redeem-uid" class="input-field" placeholder="Enter Player UID">
+            </div>
+            <div class="input-group">
+                <label>Redeem Code</label>
+                <input type="text" class="input-field" placeholder="Enter 12-digit Code">
+            </div>
+            <button class="btn" onclick="startProcess('redeem-uid', 'Redeeming Reward...')">Redeem Code Now 🎁</button>
+        </div>
+    </div>
+
+    <!-- Loader Modal -->
+    <div id="modal-loader" class="modal-overlay hidden">
+        <div class="modal">
+            <h3 id="loader-status">Connecting...</h3>
+            <div class="progress-box">
+                <div class="progress-bar" id="p-bar"></div>
+            </div>
+            <p id="loader-desc" style="font-size: 12px; color: var(--text-sub);">Establishing Secure Protocol...</p>
+        </div>
+    </div>
+
+    <script>
+        function checkPassword() {
+            const val = document.getElementById('pass-input').value;
+            if(val === 'FF2026' || val === '1234') {
+                document.getElementById('modal-pass').classList.add('hidden');
+            } else {
+                alert('गलत पासवर्ड! कृपया टेलीग्राम या इंस्टाग्राम से पासवर्ड प्राप्त करें।');
+            }
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function startProcess(inputUidId, titleText) {
+            const uidInput = document.getElementById(inputUidId).value;
+            if(!uidInput || uidInput.length < 5) {
+                alert('कृपया सही Free Fire UID दर्ज करें!');
+                return;
+            }
+
+            const activeModals = document.querySelectorAll('.modal-overlay');
+            activeModals.forEach(m => m.classList.add('hidden'));
+
+            const loader = document.getElementById('modal-loader');
+            const pBar = document.getElementById('p-bar');
+            const statusText = document.getElementById('loader-status');
+            const descText = document.getElementById('loader-desc');
+
+            statusText.innerText = titleText;
+            descText.innerText = 'Connecting to Garena Free Fire Servers...';
+            pBar.style.width = '0%';
+            loader.classList.remove('hidden');
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 20;
+                pBar.style.width = progress + '%';
+                
+                if (progress === 40) {
+                    descText.innerText = 'UID Verified: ' + uidInput;
+                } else if (progress === 80) {
+                    descText.innerText = 'Injecting Selected Protocol...';
+                } else if (progress >= 100) {
+                    clearInterval(interval);
+                    statusText.innerText = 'SUCCESSFUL! ✅';
+                    descText.innerText = 'Protocol request dispatched successfully.';
+                    setTimeout(() => {
+                        loader.classList.add('hidden');
+                    }, 2000);
+                }
+            }, 500);
+        }
+    </script>
+</body>
+</html>
